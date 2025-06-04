@@ -1,0 +1,16 @@
+# config.yaml
+
+# SMTP settings for your email provider
+# For Gmail, you might need an "App Password" if 2FA is enabled.
+# For services like SendGrid, these will be API keys or specific SMTP credentials.
+
+smtp:
+  server: "smtp.gmail.com"    # Gmail's SMTP server
+  port: 587                   # Port for TLS (recommended for Gmail)
+  use_tls: true               # Gmail uses TLS encryption on port 587
+  use_ssl: false              # Set to false if using TLS on port 587
+
+# IMPORTANT:
+# The SMTP_PASSWORD (your 16-digit App Password from Google Account Security)
+# does NOT go into this config.yaml file.
+# It must be set up as a GitHub Secret named SMTP_PASSWORD in your repository settings.

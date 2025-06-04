@@ -1,0 +1,44 @@
+<!-- templates/email_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Trending Repositories</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; color: #333; }
+        .container { max-width: 800px; margin: auto; background: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { color: #24292e; text-align: center; }
+        .repo { border-bottom: 1px solid #e1e4e8; padding-bottom: 15px; margin-bottom: 15px; }
+        .repo:last-child { border-bottom: none; }
+        .repo h2 { margin-top: 0; margin-bottom: 5px; }
+        .repo h2 a { text-decoration: none; color: #0366d6; }
+        .repo p { margin-bottom: 8px; color: #586069; font-size: 0.9em;}
+        .meta { font-size: 0.8em; color: #6a737d; }
+        .meta span { margin-right: 15px; }
+        .stars-today { font-weight: bold; color: green; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Top {{ repos|length }} Trending GitHub Repositories</h1>
+        <p style="text-align:center; font-size:0.9em; color: #586069;">As of {{ report_date }}</p>
+        {% for repo in repos %}
+        <div class="repo">
+            <h2><a href="{{ repo.url }}">{{ repo.name }}</a></h2>
+            <p>{{ repo.description }}</p>
+            <div class="meta">
+                <span>Language: {{ repo.language }}</span>
+                <span>Stars: {{ repo.stars }}</span>
+                <span>Forks: {{ repo.forks }}</span>
+                {% if repo.stars_today and repo.stars_today != "N/A" %}
+                    <span class="stars-today">{{ repo.stars_today }} stars today</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <p style="text-align:center; font-size:0.8em; margin-top: 30px;">
+            GitHub Trending Newsletter Service
+        </p>
+    </div>
+</body>
+</html>

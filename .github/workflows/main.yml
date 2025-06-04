@@ -1,0 +1,48 @@
+# .github/workflows/main.yml
+name: Send GitHub Trending Newsletter
+
+on:
+  workflow_dispatch: # Allows manual triggering
+  schedule:
+    # GMT+8 Sunday 00:00 is Saturday 16:00 UTC
+    # Cron syntax: minute hour day(month) month day(week)
+    # '0 16 * * SAT' means at 16:00 on Saturday (UTC)
+    - cron: '0 16 * * SAT'
+    # - cron: '0 * * * *'
+
+jobs:
+  build_and_send:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Or your preferred version
+
+    # - name: Install uv
+    #   run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+    # - name: Create uv venv
+    #   run: uv venv .venv
+
+    # - name: Activate uv venv
+    #   run: source .venv/bin/activate
+
+    # - name: Install dependencies using uv
+    #   run: |
+    #     source $HOME/.cargo/env # To make uv available in PATH
+    #     uv pip install -r requirements.txt
+    
+    - name: Install dependencies using pip
+      run: pip install -r requirements.txt
+
+    - name: Run script to send newsletter
+      # Crucial: use GitHub secret
+      env:
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }} 
+        SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+        SUBSCRIBERS: ${{ secrets.SUBSCRIBERS }}
+      run: python scripts/main.py # Your main script that orchestrates everything
